@@ -1,0 +1,42 @@
+[
+  {
+    "request": {
+      "body": "{\"object\":\"qux\",\"key\":\"baz\",\"algo\":\"sha256\"}",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "method": "post",
+      "options": [],
+      "request_body": "",
+      "url": "https://public.opencpu.org/ocpu/library/digest/R/hmac/"
+    },
+    "response": {
+      "body": "/ocpu/tmp/x06bbf5d7bb/R/hmac\n/ocpu/tmp/x06bbf5d7bb/R/.val\n/ocpu/tmp/x06bbf5d7bb/stdout\n/ocpu/tmp/x06bbf5d7bb/source\n/ocpu/tmp/x06bbf5d7bb/console\n/ocpu/tmp/x06bbf5d7bb/info\n/ocpu/tmp/x06bbf5d7bb/files/DESCRIPTION\n",
+      "headers": {
+        "Date": "Mon, 03 Jul 2017 17:17:14 GMT",
+        "Content-Type": "text/plain; charset=utf-8",
+        "Transfer-Encoding": "chunked",
+        "Connection": "keep-alive",
+        "Set-Cookie": "__cfduid=dfbb52d40ab07243d4adc5c2b009b7c4a1499102233; expires=Tue, 03-Jul-18 17:17:13 GMT; path=/; domain=.opencpu.org; HttpOnly",
+        "Cache-Control": "max-age=300, public",
+        "X-ocpu-session": "x06bbf5d7bb",
+        "Location": "https://public.opencpu.org/ocpu/tmp/x06bbf5d7bb/",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Expose-Headers": "Location, X-ocpu-session, Content-Type, Cache-Control",
+        "Access-Control-Allow-Headers": "Origin, Content-Type, Accept, Accept-Encoding, Cache-Control, Authorization",
+        "Access-Control-Allow-Credentials": "true",
+        "X-ocpu-r": "R version 3.4.1 (2017-06-30)",
+        "X-ocpu-locale": "en_US.UTF-8",
+        "X-ocpu-time": "2017-07-03 17:17:14 UTC",
+        "X-ocpu-version": "2.0.3.1",
+        "X-ocpu-server": "rApache",
+        "Vary": "Accept-Encoding",
+        "X-ocpu-cache": "EXPIRED",
+        "Server": "cloudflare-nginx",
+        "CF-RAY": "378b7f421f062b6a-AMS"
+      },
+      "status_code": 201,
+      "type": "ok"
+    }
+  }
+]

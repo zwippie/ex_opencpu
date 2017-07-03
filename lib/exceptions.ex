@@ -1,0 +1,6 @@
+defmodule OpenCPU.AccessDenied,               do: defexception [:message]
+defmodule OpenCPU.BadRequest,                 do: defexception [:message]
+defmodule OpenCPU.InternalServerError,        do: defexception [:message]
+defmodule OpenCPU.OpenCPUError,               do: defexception [:message]
+defmodule OpenCPU.ResponseNotAvailableError,  do: defexception [:message]
+defmodule OpenCPU.UnsupportedFormatError,     do: defexception [:message]
