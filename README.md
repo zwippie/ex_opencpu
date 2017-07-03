@@ -24,10 +24,17 @@ be found at [https://hexdocs.pm/opencpu](https://hexdocs.pm/opencpu).
 Create an entry in your `config/config.exs` for `:opencpu` with at least an endpoint_url, the rest of the configuration is optional: Set `username` and `password` to use http basic auth for each request.
 
 ```elixir
+# basics
+config :opencpu,
+  endpoint_url: "https://public.opencpu.org/ocpu",
+  verify_ssl: true,
+  timeout: 5
+
+# use http basic auth
 config :opencpu,
   endpoint_url: "https://public.opencpu.org/ocpu",
   username: "username",
-  password: "password,
+  password: "password",
   verify_ssl: true,
   timeout: 5
 
@@ -38,14 +45,14 @@ config :opencpu,
 Execute a request on the OpenCPU server:
 
 ```elixir
-OpenCPU.execute(:animation, "flip.coin")
+OpenCPU.Client.execute(:animation, "flip.coin")
 # %{"freq" => [0.56, 0.44], "nmax" => [50]}
 ```
 
 Prepare and use a delayed calculation to retreive a plot/graphic, supported formats are `:png` and `:svg`:
 
 ```elixir
-delayed_calculation = OpenCPU.prepare("animation", "flip.coin")
+delayed_calculation = OpenCPU.Client.prepare("animation", "flip.coin")
 OpenCPU.DelayedCalculation.graphics(delayed_calculation, 0, :png)
 # Returns the PNG file contents
 ```

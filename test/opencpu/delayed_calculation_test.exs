@@ -1,7 +1,7 @@
 defmodule OpenCPU.DelayedCalculationTest do
   use ExUnit.Case, async: false
   use ExVCR.Mock
-  alias OpenCPU.DelayedCalculation
+  alias OpenCPU.{Client, DelayedCalculation}
 
   setup_all do
     Application.put_env(:opencpu, :endpoint_url, "https://public.opencpu.org/ocpu")
@@ -33,7 +33,7 @@ defmodule OpenCPU.DelayedCalculationTest do
   test "graphics" do
     # Use one test to save on cassettes (and lines of code :)
     use_cassette "animation_flip_coin_graphics" do
-      delayed_calculation = OpenCPU.prepare("animation", "flip.coin")
+      delayed_calculation = Client.prepare("animation", "flip.coin")
 
       # it defines methods to access graphic functions
       assert DelayedCalculation.graphics(delayed_calculation) # not to raise error
@@ -58,7 +58,7 @@ defmodule OpenCPU.DelayedCalculationTest do
 
   test "standard getters" do
     use_cassette "animation_flip_coin_getters" do
-      delayed_calculation = OpenCPU.prepare("animation", "flip.coin")
+      delayed_calculation = Client.prepare("animation", "flip.coin")
 
       # it returns raw R calculation result
       assert DelayedCalculation.value(delayed_calculation) =~ "$freq"

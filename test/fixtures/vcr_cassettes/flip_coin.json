@@ -11,29 +11,29 @@
       "url": "https://public.opencpu.org/ocpu/library/animation/R/flip.coin/json"
     },
     "response": {
-      "body": "{\n  \"freq\": [0.54, 0.46],\n  \"nmax\": [50]\n}\n",
+      "body": "{\n  \"freq\": [0.42, 0.58],\n  \"nmax\": [50]\n}\n",
       "headers": {
-        "Date": "Mon, 03 Jul 2017 17:17:15 GMT",
+        "Date": "Mon, 03 Jul 2017 19:36:37 GMT",
         "Content-Type": "application/json",
         "Transfer-Encoding": "chunked",
         "Connection": "keep-alive",
-        "Set-Cookie": "__cfduid=db314f3e503beb58802a92b519ab7ee1a1499102234; expires=Tue, 03-Jul-18 17:17:14 GMT; path=/; domain=.opencpu.org; HttpOnly",
+        "Set-Cookie": "__cfduid=d43aa163da19b00be9313397c622fb7631499110596; expires=Tue, 03-Jul-18 19:36:36 GMT; path=/; domain=.opencpu.org; HttpOnly",
         "Cache-Control": "max-age=300, public",
-        "X-ocpu-session": "x0254f0a707",
-        "Location": "https://public.opencpu.org/ocpu/tmp/x0254f0a707/",
+        "X-ocpu-session": "x0672b619eb",
+        "Location": "https://public.opencpu.org/ocpu/tmp/x0672b619eb/",
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Expose-Headers": "Location, X-ocpu-session, Content-Type, Cache-Control",
         "Access-Control-Allow-Headers": "Origin, Content-Type, Accept, Accept-Encoding, Cache-Control, Authorization",
         "Access-Control-Allow-Credentials": "true",
         "X-ocpu-r": "R version 3.4.1 (2017-06-30)",
         "X-ocpu-locale": "en_US.UTF-8",
-        "X-ocpu-time": "2017-07-03 17:17:15 UTC",
+        "X-ocpu-time": "2017-07-03 19:36:36 UTC",
         "X-ocpu-version": "2.0.3.1",
         "X-ocpu-server": "rApache",
         "Vary": "Accept-Encoding",
         "X-ocpu-cache": "EXPIRED",
         "Server": "cloudflare-nginx",
-        "CF-RAY": "378b7f489cb42c36-AMS"
+        "CF-RAY": "378c4b6bcf5f2bee-AMS"
       },
       "status_code": 201,
       "type": "ok"
