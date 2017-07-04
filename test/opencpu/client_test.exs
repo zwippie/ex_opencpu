@@ -1,11 +1,11 @@
 defmodule OpenCPU.ClientTest do
   use ExUnit.Case, async: false
-  use ExVCR.Mock
+  use ExVCR.Mock, adapter: ExVCR.Adapter.Hackney
   alias OpenCPU.Client
 
   setup_all do
     ExVCR.Config.cassette_library_dir("test/fixtures/vcr_cassettes")
-    HTTPotion.start
+    HTTPoison.start
     :ok
   end
 

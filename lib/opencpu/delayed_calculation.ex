@@ -57,11 +57,11 @@ defmodule OpenCPU.DelayedCalculation do
   end
 
   defp process_resource(resource) do
-    case response = HTTPotion.get(resource, [follow_redirects: true]) do
-      %HTTPotion.Response{} ->
-        String.trim(response.body)
-      %HTTPotion.ErrorResponse{message: message} ->
-        raise OpenCPU.BadRequest, message: "Error loading resource '#{resource}': #{message}"
+    case HTTPoison.get(resource, [], [follow_redirect: true]) do
+      {:ok, %HTTPoison.Response{body: body}} ->
+        String.trim(body)
+      {:error, %HTTPoison.Error{reason: reason}} ->
+        raise OpenCPU.BadRequest, message: "Error loading resource '#{resource}': #{reason}"
     end
   end
 

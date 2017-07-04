@@ -29,9 +29,9 @@ defmodule OpenCPU.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [
-      {:httpotion, "~> 3.0.2"},
+      {:httpoison, "~> 0.12"},
       {:poison, "~> 3.1"},
-      {:exvcr, "~> 0.8", only: :test},
+      {:exvcr, "~> 0.8", only: :test}
     ]
   end
 end

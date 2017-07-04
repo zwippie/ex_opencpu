@@ -1,12 +1,12 @@
 defmodule OpenCPU.DelayedCalculationTest do
   use ExUnit.Case, async: false
-  use ExVCR.Mock
+  use ExVCR.Mock, adapter: ExVCR.Adapter.Hackney
   alias OpenCPU.{Client, DelayedCalculation}
 
   setup_all do
     Application.put_env(:opencpu, :endpoint_url, "https://public.opencpu.org/ocpu")
     ExVCR.Config.cassette_library_dir("test/fixtures/vcr_cassettes")
-    HTTPotion.start
+    HTTPoison.start
     :ok
   end
 

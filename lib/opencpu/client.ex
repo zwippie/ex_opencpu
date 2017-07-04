@@ -13,13 +13,6 @@ defmodule OpenCPU.Client do
     ]
   end
 
-  def process_url(url) do
-    case endpoint_url = get_env(:endpoint_url) do
-      nil -> raise OpenCPU.OpenCPUError, message: "OpenCPU endpoint is not configured"
-      _   -> endpoint_url <> url
-    end
-  end
-
   @doc """
   Execute a request on an OpenCPU server and parse the JSON result.
   """
@@ -28,6 +21,7 @@ defmodule OpenCPU.Client do
     options = Map.merge(%Options{}, options)
 
     function_url(package, function, options.user, options.github_remote, :json)
+    |> process_url
     |> process_query(options.data)
     |> Map.fetch!(:body)
     |> Poison.decode!
@@ -47,12 +41,15 @@ defmodule OpenCPU.Client do
     response =
       "#{package_url(package, options.user, options.github_remote)}/info"
       |> process_url
-      |> HTTPotion.get(request_options(nil))
+      |> HTTPoison.get(headers(), request_options())
 
-    case response.status_code in [200, 201] do
-      true  -> response.body
-      false -> raise OpenCPU.OpenCPUError, message:
-        "Error getting description, status code #{response.status_code}: #{response.body}"
+    case response do
+      {:ok, %HTTPoison.Response{status_code: code} = response} when code in [200, 201] ->
+        response.body
+      {:ok, %HTTPoison.Response{status_code: code, body: body}} ->
+        raise OpenCPU.OpenCPUError, message: "Error getting description: #{code}, #{body}"
+      {:error, %HTTPoison.Error{reason: reason}} ->
+        raise OpenCPU.OpenCPUError, message: "Error: #{reason}"
     end
   end
 
@@ -69,29 +66,50 @@ defmodule OpenCPU.Client do
 
     response =
       function_url(package, function, options.user, options.github_remote, nil)
+      |> process_url
       |> process_query(options.data)
 
     OpenCPU.DelayedCalculation.new(
-      response.headers.hdrs |> Map.get("location"),
+      response.headers |> Enum.into(%{}) |> Map.get("Location"),
       response.body |> String.split("\n")
     )
   end
 
   defp process_query(url, data) do
-    response = HTTPotion.post(process_url(url), request_options(data))
+    data = Poison.encode!(data)
 
-    case response.status_code do
-      code when code in [200, 201] ->
+    case HTTPoison.post(url, data, headers(), request_options()) do
+      {:ok, %HTTPoison.Response{status_code: code} = response} when code in [200, 201] ->
         response
-      403 ->
-        raise OpenCPU.AccessDenied, message: response.body
-      code when code in 400..499 ->
-        raise OpenCPU.BadRequest, message: response.body
-      code when code in 500..599 ->
-        raise OpenCPU.InternalServerError, message: response.body
-      _ ->
-        raise OpenCPU.OpenCPUError, message:
-          "Invalid status code: #{response.status_code}, #{response.body}"
+      {:ok, %HTTPoison.Response{status_code: 403, body: body}} ->
+        raise OpenCPU.AccessDenied, message: body
+      {:ok, %HTTPoison.Response{status_code: code, body: body}} when code in 400..499 ->
+        raise OpenCPU.BadRequest, message: body
+      {:ok, %HTTPoison.Response{status_code: code, body: body}} when code in 500..599 ->
+        raise OpenCPU.BadRequest, message: body
+      {:ok, %HTTPoison.Response{status_code: code, body: body}} ->
+        raise OpenCPU.OpenCPUError, message: "Invalid status code: #{code}, #{body}"
+      {:error, %HTTPoison.Error{reason: reason}} ->
+        raise OpenCPU.OpenCPUError, message: "Error: #{reason}"
+    end
+  end
+
+  def process_url(url) do
+    case endpoint_url = get_env(:endpoint_url) do
+      nil -> raise OpenCPU.OpenCPUError, message: "OpenCPU endpoint is not configured"
+      _   -> endpoint_url <> url
+    end
+  end
+
+  def headers do
+    [{"Content-Type", "application/json"}]
+  end
+
+  def request_options do
+    case {get_env(:username), get_env(:password)} do
+      {nil, _}             -> []
+      {_, nil}             -> []
+      {username, password} -> [hackney: [basic_auth: {username, password}]]
     end
   end
 
@@ -109,21 +127,6 @@ defmodule OpenCPU.Client do
     |> Enum.map(fn v -> convert_na_to_nil(v) end)
   end
   def convert_na_to_nil(data), do: data
-
-  defp request_options(data) do
-    options = [
-      verify: get_env(:verify_ssl, true),
-      body: Poison.encode!(data),
-      headers: ["Content-Type": "application/json"]
-    ]
-
-    if get_env(:username) && get_env(:password) do
-      options
-      |> Keyword.put(:basic_auth, {get_env(:username), get_env(:password)})
-    else
-      options
-    end
-  end
 
   def function_url(package, function, user \\ :system, github_remote \\ false, format \\ nil) do
     "#{package_url(package, user, github_remote)}/R/#{function}/#{format}"
