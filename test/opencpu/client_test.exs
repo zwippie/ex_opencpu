@@ -4,7 +4,6 @@ defmodule OpenCPU.ClientTest do
   alias OpenCPU.Client
 
   setup_all do
-    ExVCR.Config.cassette_library_dir("test/fixtures/vcr_cassettes")
     HTTPoison.start
     :ok
   end

@@ -5,7 +5,6 @@ defmodule OpenCPU.DelayedCalculationTest do
 
   setup_all do
     Application.put_env(:opencpu, :endpoint_url, "https://public.opencpu.org/ocpu")
-    ExVCR.Config.cassette_library_dir("test/fixtures/vcr_cassettes")
     HTTPoison.start
     :ok
   end
